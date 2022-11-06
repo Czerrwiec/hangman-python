@@ -6,7 +6,7 @@ word_list = []
 number = 0
 
 
-def find_indexes(letter):
+def find_indexes(letter, word):
     indexes = []
     for i, l in enumerate(word):
         if l == letter:
@@ -14,7 +14,7 @@ def find_indexes(letter):
     return indexes
 
 
-def score_table():
+def score_table(tries):
     print()
     if len(used_letters) != 0:
         print(f"Użyte litery: {used_letters}")
@@ -53,80 +53,95 @@ def difficulty(number):
             continue
 
 
-tries = difficulty(number)
-
-while True: 
+def restart():
     print()
-    print("1. Imiona męskie")
-    print("2. Imiona żeńskie")
-    print("3. Imiona mieszane")
-    print("4. Rzeczowniki")
-    try:
-        user_choice = int(input("Wybierz zestaw haseł: "))
-        if user_choice == 1:
-            word = userChoice("Python hangman\imiona meskie.txt")
-            break
-        if user_choice == 2:
-            word = userChoice("Python hangman\imiona zenskie.txt")
-            break      
-        if user_choice == 3:
-            word = userChoice("Python hangman\imiona mieszane.txt")
-            break
-        if user_choice == 4:
-            word = userChoice("Python hangman\ki.txt")
-            break
-        else:
-            continue
-    except:
-        ValueError
+    restart_choice = input("Czy chcesz zagrać jeszcze raz? (t/n) ")
+    if restart_choice == "t" or restart_choice == "T":
+        word_list.clear()
+        used_letters.clear()
         print()
-        print("Wybierz od 1-4.")
-        continue 
-
-for x in word:
-    word_list.append("_")  
-
-while True:        
-    score_table()
-    letter = input("Podaj literę: ").lower()
-    if re.search(r"^[a-złżźąęśćóń]$", letter) and letter not in used_letters:
-        used_letters.append(letter)
+        game()
     else:
-        if letter in used_letters:
-            print("Podana litera została już użyta.")
-            continue
-        else:
-            print()
-            print("Podaj literę od a-z.")
-            continue
-                    
-    found_indexes = find_indexes(letter)
-
-    if len(found_indexes) == 0:
-        print("Nie ma takiej litery w tym słowie.")
-        print()
-        tries -= 1
-                    
-    for x in found_indexes:
-        word_list[x] = letter
-
-    if "".join(word_list) == word:
-        print(f"Brawo! Słowo to {word.upper()}")
-        winList = []
-        for i in word_list:
-            winList.append(i.upper())
-        print()
-        print(winList)
-        print()  
         quit()
 
-    if tries == 0:
-        print(f"Liczba prób: {tries}")
-        choice = input("Niestety przegrałeś, czy chcesz odkryć słowo? (t/n) ")
-        if choice == "t" or choice == "T":
-            print()
-            print(f"Słowo to {word.upper()}")
-            quit()
-        else:
-            quit()
 
+def game():
+    tries = difficulty(number)
+
+    while True: 
+        print()
+        print("1. Imiona męskie")
+        print("2. Imiona żeńskie")
+        print("3. Imiona mieszane")
+        print("4. Rzeczowniki")
+        try:
+            user_choice = int(input("Wybierz zestaw haseł: "))
+            if user_choice == 1:
+                word = userChoice("Python_hangman/imiona_m.txt")
+                break
+            if user_choice == 2:
+                word = userChoice("Python_hangman/imiona_z.txt")
+                break      
+            if user_choice == 3:
+                word = userChoice("Python_hangman/imiona_mix.txt")
+                break
+            if user_choice == 4:
+                word = userChoice("Python_hangman/o.txt")
+                break
+            else:
+                continue
+        except:
+            ValueError
+            print()
+            print("Wybierz od 1-4.")
+            continue 
+
+    for x in word:
+        word_list.append("_")  
+
+    while True:        
+        score_table(tries)
+        letter = input("Podaj literę: ").lower()
+        if re.search(r"^[a-złżźąęśćóń]$", letter) and letter not in used_letters:
+            used_letters.append(letter)
+        else:
+            if letter in used_letters:
+                print("Podana litera została już użyta.")
+                continue
+            else:
+                print()
+                print("Podaj literę od a-z.")
+                continue
+                        
+        found_indexes = find_indexes(letter, word)
+
+        if len(found_indexes) == 0:
+            print("Nie ma takiej litery w tym słowie.")
+            print()
+            tries -= 1
+                        
+        for x in found_indexes:
+            word_list[x] = letter
+
+        if "".join(word_list) == word:
+            print(f"Brawo! Słowo to {word.upper()}")
+            winList = []
+            for i in word_list:
+                winList.append(i.upper())
+            print()
+            print(winList)
+            print()  
+            restart()
+
+        if tries == 0:
+            print(f"Liczba prób: {tries}")
+            choice = input("Niestety przegrałeś, czy chcesz odkryć słowo? (t/n) ")
+            if choice == "t" or choice == "T":
+                print()
+                print(f"Słowo to {word.upper()}")
+                restart()
+            else:
+                restart()
+
+        
+game()

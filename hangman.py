@@ -77,16 +77,16 @@ def game():
         try:
             user_choice = int(input("Wybierz zestaw haseł: "))
             if user_choice == 1:
-                word = userChoice("Python_hangman/imiona_m.txt")
+                word = userChoice("Python_hangman/names_m.txt")
                 break
             if user_choice == 2:
-                word = userChoice("Python_hangman/imiona_z.txt")
+                word = userChoice("Python_hangman/names_w.txt")
                 break      
             if user_choice == 3:
-                word = userChoice("Python_hangman/imiona_mix.txt")
+                word = userChoice("Python_hangman/names_mix.txt")
                 break
             if user_choice == 4:
-                word = userChoice("Python_hangman/o.txt")
+                word = userChoice("Python_hangman/nouns.txt")
                 break
             else:
                 continue
